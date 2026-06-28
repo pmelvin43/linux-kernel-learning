@@ -1,0 +1,9 @@
+*.o
+*.ko
+*.mod
+*.cmd
+*.tmp
+*.out
+*.swp
+*.log
+build/
