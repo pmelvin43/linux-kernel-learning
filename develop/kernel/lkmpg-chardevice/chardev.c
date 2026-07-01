@@ -37,3 +37,49 @@ enum
     CDEV_NOT_USED,
     CDEV_EXCLUSIVE_OPEN,
 };
+
+/* Is device open? Used to prevent multiple access to device */
+static atomic_t already_open = ATOMIC_INIT(CDEV_NOT_USED);
+
+static char msg[BUF_LEN + 1]; /* The msg the device will give when asked */
+
+static struct class *cls;
+
+static struct file_operations chardev_fops = {
+    .read = device_read,
+    .write = device_write,
+    .open = device_open,
+    .release = device_release,
+};
+
+static int __init chardev_init(void)
+{
+    major = register_chrdev(0, DEVICE_NAME, &chardev_fops);
+
+    if (major < 0)
+    {
+        pr_alert("Registering char device failed with %d\n", major);
+        return major;
+    }
+
+    pr_info("I was assigned major number %d.\n", major);
+
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 4, 0)
+    cls = class_create(DEVICE_NAME);
+#else
+    cls = class_create(THIS_MODULE, DEVICE_NAME);
+#endif
+    if (IS_ERR(CLS))
+    {
+        pr_err("Failed to create class for device\n");
+        unregister_chrdev(major, DEVICE_NAME);
+        return PTR_ERR(cls);
+    }
+    device_create(cls, NULL, MKDEV(major, 0), NULL, DEVICE_NAME);
+
+    pr_info("Device created on /dev/%s\n", DEVICE_NAME);
+
+    return 0;
+}
+
+// tomorrow, learn what the init does. I am so tired today
