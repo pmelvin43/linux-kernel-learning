@@ -27,7 +27,7 @@ static int device_release(struct inode *, struct file *); // same
 static ssize_t device_read(struct file *, char __user *, size_t,
                            loff_t *); // file struct, pointer to userspace, size, long offset, all
                                       // of signed size return type
-static ssize_t device_write(struct file *, char __user *, size_t, loff_t *);
+static ssize_t device_write(struct file *, const char __user *, size_t, loff_t *);
 
 #define DEVICE_NAME "chardev" /* Dev name as it appears in /proc/devices */
 #define BUF_LEN 80            /* Max length of the message from the device */
