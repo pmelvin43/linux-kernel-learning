@@ -121,9 +121,8 @@ static int device_open(struct inode *inode, struct file *file)
     }
 
     sprintf(msg, "I already told you %d times Hello world!\n", counter++);
-    -
 
-        return 0;
+    return 0;
 }
 
 /* Called when a process closes the device file. */
