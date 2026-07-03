@@ -26,7 +26,7 @@ static ssize_t procfile_read(struct file *file_pointer, char __user *buffer, siz
         pr_info("copy_to_user failed\n");
         ret = 0;
     } else {
-        pr_info("procfile read %s\n, file_pointer->f_path.dentry->d_name.name");
+        pr_info("procfile read %s\n", file_pointer->f_path.dentry->d_name.name);
         *offset += len;
     }
 
@@ -39,7 +39,8 @@ static const struct proc_ops proc_file_fops = {
 };
 #else
 static const struct file_operations proc_file_fops = {
-    .read = procfile.read,
+    .read = procfile_read,
+
 };
 #endif
 
