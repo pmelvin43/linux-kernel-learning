@@ -16,8 +16,7 @@
 
 static struct proc_dir_entry *our_proc_file;
 
-static ssize_t procfile_read(struct file *file_pointer, char __user *buffer, size_t buffer_length,
-                             loff_t *offset)
+static ssize_t procfile_read(struct file *file_pointer, char __user *buffer, size_t buffer_length, loff_t *offset)
 {
     char s[13] = "HelloWorld!\n";
     int len = sizeof(s);
